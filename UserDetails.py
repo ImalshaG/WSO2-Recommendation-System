@@ -22,7 +22,7 @@ for row in df_user['Search']:
       UserKeywordWeights[row.lower()]=1
 
 ### Application description
-path = 'Data1/Application_Info.csv'
+path = 'Data/Application_Info.csv'
 if (os.path.exists(path)):
   app_data = pd.read_csv(path,sep=',',names="UserName,name,description".split(","))
   user_app_data = app_data[app_data['UserName']==user]
