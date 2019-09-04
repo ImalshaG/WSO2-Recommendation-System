@@ -2,10 +2,12 @@ import pandas as pd
 from rake_nltk import Rake
 import spacy
 import gensim
+import sqlalchemy
 
 #Loading models
 nlp = spacy.load('en')
 model1 = gensim.models.Word2Vec.load("word2vec_model1.model")
+engine = sqlalchemy.create_engine('mysql+pymysql://root:1234@localhost:3306/APIM')
 
 #Extracting keywords from a description
 def extractKeywords(words_description):
@@ -38,7 +40,6 @@ def getSynonyms(words,model):
 
     for word in words:
         if ((words[word]>=2) and (word in model)):
-            #print (word)
             mainKeys.append(word)
             
     if mainKeys:
