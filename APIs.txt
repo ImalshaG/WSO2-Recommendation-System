@@ -1,0 +1,189 @@
+Amazon S3 
+Tags : ["Storage","Cloud"]
+Context : /amazon-s3/1.0.0
+Resources : [/store, /retrieve-data, /search]
+Description : Since 2006 Amazon Web Services has been offering web services commonly known as cloud computing. AWS Provides a reliable, low cost infrastructure platform that powers hundreds of thousands of businesses. Amazon S3 API, the Simple Storage Service provides 
+-----------------------------
+
+Bing
+Tags : ["search","Machine Learning"]
+Context : /bing/1.0.0
+Resources : [/web-search, /search-history, /bookmarks]
+Description : The Bing API provides an experience similar to Bing.com/search by returning search results that Bing determines are relevant to a user's query. The results include Web pages and may also include images, videos, and more. Free trial keys are available here
+-----------------------------
+
+Booking
+Tags : ["Travel"]
+Context : /booking/1.0.0
+Resources : [/locations, /currencies, /properties]
+Description : Booking API helps to query rooms, price, facilities, policities, etc information from many hotels around the world as on official site.
+-----------------------------
+
+Breaking News
+Tags : ["Finance"]
+Context : /breaking-news/1.0.0
+Resources : [/getTopNews, /news, /getCompanyDetails]
+Description : MyAllies News delivers news from across the globe and information on the latest breaking business and financial news. Breaking news from around the globe as and when it happens using our complex web crawling technologies, information and big announcements
+-----------------------------
+
+Currency Converter
+Tags : ["Finance","Currency"]
+Context : /currency-converter/1.0.0
+Resources : [/rates, /available-currencies, /convert]
+Description : Provides exchange rates based on the official banks data. It returns the list of available currencies. 
+-----------------------------
+
+Domainr
+Tags : ["Business"]
+Context : /domainr/1.0.0
+Resources : [/search, /status, /register]
+Description : Instant domain search. Responds with search suggestions related to the query. Check domain availability. Responds with an HTTP redirect to a supporting registrar.
+-----------------------------
+
+Fiz places
+Tags : ["Travel"]
+Context : /fizplaces/1.0.0
+Resources : [/lists, /places]
+Description : High quality, curated content on top places around the world including: top hotspots, landmarks, restaurants, POIs, museums, parks etc etc. Places are scored using Fiz unique algorithm, to determine 'relevance' and 'popularity'. The Lite endpoint may be u
+-----------------------------
+
+Flickr
+Tags : ["Photos","Video"]
+Context : /flickr/1.0.0
+Resources : [/service, /upload, /retrieve]
+Description : The Flickr API can be used to retrieve photos from the Flickr photo sharing service using a variety of feeds - public photos and videos, favorites, friends, group pools, discussions, and more. The API can also be used to upload photos and video.The Flickr
+-----------------------------
+
+Foursquare
+Tags : ["Photos","Social","Search","Mapping","Mobile"]
+Context : /foursquare/1.0.0
+Resources : [/get-information, /search, /locate]
+Description : The Foursquare Places API provides location based experiences with diverse information about venues, users, photos, and check-ins. The API supports real time access to places, Snap-to-Place that assigns users to specific locations, and Geo-tag. Additional
+-----------------------------
+
+GooglePlaces
+Tags : ["Mapping"]
+Context : /GooglePlacesdimasV1/1.0.0
+Resources : [/addPlace, /getImageURL, /getNearbyPlaces, /getPlaceDetails, /searchPlacesByText]
+Description : Connect to the Google Places API to add location awareness for more contextual results. Test an API call in your browser and export the code snippet.
+-----------------------------
+
+Kajak
+Tags : ["Travel","Transportation"]
+Context : /kajak/1.0.0
+Resources : [/flights, /hotels, /locations]
+Description : API to query realtime Flights prices, Hotels booking and Cars hiring.Create new session for searching flights tickets of all airlines around the world, searching all hotels prices around the world. 
+-----------------------------
+
+PayPal
+Tags : ["Payments"]
+Context : /paypal/1.0.0
+Resources : [/createPayment, /executePayment, /sendInvoice, /updatePayment, /getCreditCard]
+Description : Accept PayPal and credit card payments online or on mobile. Use the payment resource for direct credit card payments, stored credit card payments, or PayPal account payments.
+-----------------------------
+
+PizzaShackAPI
+Tags : ["pizza","check"]
+Context : /pizzashack/1.0.0
+Resources : [/order, /menu, /order/{orderId}]
+Description : This is a RESTFul API for Pizza Shack online pizza delivery store.
+-----------------------------
+
+
+Tags : None
+Context : None
+Resources : None
+Description : None
+-----------------------------
+
+Shopping.com
+Tags : ["eCommerce"]
+Context : /shopping.com/1.0.0
+Resources : [/publisher, /search, /cart]
+Description : With the Shopping.com API you can integrate relevant product content with the deepest product catalog available online. Add millions of unique products and merchant offers to your site. Shopping.com, an eBay company, is the world online comparison shoppin
+-----------------------------
+
+Skyscanner Car Hire Live Prices
+Tags : ["Cars","Travel","Transportation"]
+Context : /skyscanner-car-hire-live-prices/1.0.0
+Resources : [/poll-session, /create-session, /information]
+Description : Retrieve live prices for car hire providers. Return the details of all possible car hire quotes that satisfy the request query parameters. Prices will be obtained for the car hire quotes during the session. 
+-----------------------------
+
+Skyscanner Flight Search
+Tags : ["Travel","Transportation"]
+Context : /flightsearch/1.0.0
+Resources : [/liveflightsearch, /places, /localisation, /browseflightprices]
+Description : The Sky Scanner API lets you search for flight & get flight prices from Skyscanners database of prices, as well as get live quotes directly from ticketing agencies.
+-----------------------------
+
+Ticket Master
+Tags : ["Events"]
+Context : /ticketmaster/1.0.0
+Resources : [/getPayments, /searchEvents, /searchVenues]
+Description :  Pull events, venues, tickets, deliveries and payments.Find events, venues and filter your search by location, date, availability, and much more. 
+-----------------------------
+
+Travel Portal
+Tags : ["Travel","Booking"]
+Context : /travel-portal/1.0.0
+Resources : [/book, /search, /locations]
+Description : The Travel Portal API provides programmatic access to functions that allow customers to book hotels, flights, cars, and tours from the developer's websites. Travel Portal allows users to make bookings through Expedia, Cartrawler, Dohop, and Viator using i
+-----------------------------
+
+Twitter
+Tags : ["Social","Blogging"]
+Context : /twitter/1.0.0
+Resources : [/search, /message, /ads]
+Description : The Twitter micro-blogging service includes two RESTful APIs. The Twitter REST API methods allow developers to access core Twitter data. This includes update timelines, status data, and user information. The Search API methods give developers methods to i
+-----------------------------
+
+Uber Ride
+Tags : ["Travel","Transportation"]
+Context : /uber-ride/1.0.0
+Resources : [/getRide, /payment, /prices]
+Description : Request an Uber ride from within your app. Allows retrieving the status of an ongoing or completed trip that was created by your app. 
+-----------------------------
+
+Weather
+Tags : ["Weather"]
+Context : /weather2020/1.0.0
+Resources : [/forecast, /timemachine]
+Description : This document describe a RESTFul API for Pizza Shack online pizza delivery store.
+-----------------------------
+
+
+Tags : None
+Context : None
+Resources : None
+Description : None
+-----------------------------
+
+Web Search
+Tags : ["Data"]
+Context : /web-search/1.0.0
+Resources : [/autoComplete, /webSearch, /newsSearch]
+Description : Web Search API. News API. Image API. Billions of webpages, images and news with a single API call. Build your app for free. Billions of webpages, images and news with a single API call. The API returns a list of relevant results from a search query which 
+-----------------------------
+
+WePay
+Tags : ["Payment","Finance"]
+Context : /wepay/1.0.0
+Resources : [/find-account, /account, /create-account]
+Description : Integrated payments designed for platforms. Lookup the details of a payment account on WePay.  
+-----------------------------
+
+WordsAPI
+Tags : ["Data"]
+Context : /wordsapi/1.0.0
+Resources : [/search, /synonyms, /antonyms]
+Description : Words API lets you retrieve information about English words, including definitions, synonyms, rhymes, pronunciation, syllables, and frequency of usage. you can use Words API to search for words matching parameters you specify.
+-----------------------------
+
+PhoneVerification
+Tags : []
+Context : /phoneverify/2.0.0
+Resources : [/CheckPhoneNumber]
+Description : 
+-----------------------------
+
