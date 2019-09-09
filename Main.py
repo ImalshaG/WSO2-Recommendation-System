@@ -7,7 +7,7 @@ import sqlalchemy
 #Loading models
 nlp = spacy.load('en')
 model1 = gensim.models.Word2Vec.load("word2vec_model1.model")
-engine = sqlalchemy.create_engine('mysql+pymysql://root:1234@localhost:3306/APIM')
+engine = sqlalchemy.create_engine('mysql+pymysql://root:1234@localhost:3306/ProjectDB')
 
 #Extracting keywords from a description
 def extractKeywords(words_description):
