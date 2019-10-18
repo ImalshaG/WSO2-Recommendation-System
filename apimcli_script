@@ -1,0 +1,47 @@
+#!/bin/bash
+# apimcli script to get API details
+
+cd /home/imalsha/Documents/APIM/apimcli
+./apimcli
+./apimcli list envs
+./apimcli add-env -n recommender_system --apim https://localhost:9443 --registration https://localhost:9443/client-registration/v0.15/register --admin https://localhost:9443/api/am/admin/v0.15 --api_list https://localhost:9443/api/am/publisher/v0.15/apis --app_list https://localhost:9443/api/am/admin/v0.15/applications --token https://localhost:9443/oauth2/token
+./apimcli export-apis -e recommender_system -t carbon.super -k
+
+cd /home/imalsha/.wso2apimcli/exported/migration/recommender_system/carbon-dot-super/apis
+for file in *.zip
+do
+	#echo "$file"
+	unzip "$file" -d "/home/imalsha/Desktop/API_info/Migrated_APIs"
+done
+
+echo "Unzipped"
+
+rm -rf /home/imalsha/.wso2apimcli/exported/migration/recommender_system 
+cd /home/imalsha/Desktop/API_info/Migrated_APIs
+for API in ./*/
+do
+	api_file="$API"Meta-information/api.yaml
+	swagger_file="$API"Meta-information/swagger.yaml
+	new=$(echo $API | cut -c 3-)
+	new=${new%-*}
+	#echo "$new"
+	api_copy=/home/imalsha/Desktop/API_info/Migrated_APIs/"${new%/}"_api
+	swagger_copy=/home/imalsha/Desktop/API_info/Migrated_APIs/"${new%/}"_swag
+	cp "$api_file" "$api_copy.yaml"
+	cp "$swagger_file" "$swagger_copy.yaml"
+	rm -rf "$API"
+	
+done
+
+#cd /home/imalsha/Documents/Projects/Recommender_System/Server
+#python3 API_input.py
+#source venv/bin/activate
+#python3 Server.py
+
+
+#deactivate
+#
+#rm -rf /home/imalsha/Desktop/API_info/Migrated_APIs
+
+
+
