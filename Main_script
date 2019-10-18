@@ -1,0 +1,15 @@
+#!/bin/bash
+# main script for recommendation
+
+./apimcli_script
+#python3 API_input.py
+source venv/bin/activate
+python3 Server.py
+
+
+#deactivate
+#
+#rm -rf /home/imalsha/Desktop/API_info/Migrated_APIs
+
+
+
