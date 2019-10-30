@@ -3,7 +3,7 @@ from rake_nltk import Rake
 import spacy
 import gensim
 import sqlalchemy
-from API_details import API_dataset
+import datetime
 
 #Loading models
 print("Loading Models")
@@ -11,13 +11,23 @@ nlp = spacy.load('en')
 word2vec_model = gensim.models.Word2Vec.load("word2vec_model1.model")
 
 # Accessing the WSO2AM_DB to get users' application details and ProjectDB to get sample user search details
+print("Loading Data from db...")
 project_engine = sqlalchemy.create_engine('mysql+pymysql://root:1234@localhost:3306/ProjectDB')
 AM_DB_engine = sqlalchemy.create_engine('mysql+pymysql://root:1234@localhost:3306/WSO2AM_DB')
 
+application_table = pd.read_sql_table("AM_APPLICATION",AM_DB_engine, 
+                                      columns=["APPLICATION_ID","CREATED_BY","NAME","DESCRIPTION","UPDATED_TIME"])
+API_table = pd.read_sql_table("AM_API",AM_DB_engine, columns=["API_ID","API_NAME"])
+subscription_table = pd.read_sql_table("AM_SUBSCRIPTION",AM_DB_engine, columns=["API_ID","APPLICATION_ID"])
+
+merged_table1 = pd.merge(left=application_table,right=subscription_table, how='left', left_on='APPLICATION_ID', 
+                         right_on='APPLICATION_ID')
+merged_table2 = pd.merge(left=merged_table1,right=API_table, how='left', left_on='API_ID', right_on='API_ID')
+
 # Extracting keywords from a description
 def extract_keywords(text):
-    tfile = open('stopList.txt', 'r')
-    contents =list(tfile.read().split('\n'))
+    stop_words_file = open('stopList.txt', 'r')
+    contents =list(stop_words_file.read().split('\n'))
     rake_object = Rake(stopwords = contents)
     rake_object.extract_keywords_from_text(text)
     key_words_scores = rake_object.get_word_degrees()
@@ -54,12 +64,12 @@ def get_synonyms(words,model):
     if words_in_model:
         similar_words=model.wv.most_similar(positive=words_in_model,topn=10)
 
-    for current_word in similar_words:
-        nlp_word =nlp(current_word[0])
-        if nlp_word:
-            word_lemma = nlp_word[0].lemma_
-        if ((word_lemma not in similar_lemmas) and (word_lemma not in words)):
-            similar_lemmas[word_lemma] = current_word[1]
+        for current_word in similar_words:
+            nlp_word =nlp(current_word[0])
+            if nlp_word:
+                word_lemma = nlp_word[0].lemma_
+            if ((word_lemma not in similar_lemmas) and (word_lemma not in words)):
+                similar_lemmas[word_lemma] = current_word[1]
     return similar_lemmas
 
 # Creating a dictionary from a list
@@ -95,6 +105,23 @@ def get_pearson_correlation(API_name,matrix):
     correlation = transposed_matrix.corrwith(API_data)
     most_similar = correlation.sort_values(ascending=False)
     return most_similar
+
+# Remove the given APIs from the dictionary
+def remove_APIs(dictionary,APIs):
+    for API in APIs:
+        if API in (dictionary.keys()):
+            del dictionary[API]
+    return dictionary
+
+# Limit the entries of the table according to the time
+def get_time_limited_table(minimum_count,months,original_table,column_name):
+    time_limit = str(datetime.datetime.today()-datetime.timedelta(months*365/12))[:19]
+    limited_table = original_table.loc[(original_table[column_name])>time_limit]
+    entry_count = limited_table.shape[0]
+    
+    if entry_count<minimum_count:
+        limited_table = original_table.tail(minimum_count)
+    return limited_table
     
 def get_user_dictionary(user_name):
     
@@ -105,7 +132,8 @@ def get_user_dictionary(user_name):
         # Getting User Details from the sample db
         users_details = pd.read_sql_table("User_Details",project_engine)
         user_search_details = users_details[users_details['User_Name'].str.contains(user_name)]
-
+        user_search_details = get_time_limited_table(10,3,user_search_details,'Time')
+        
         # Add the names of the APIs clicked by the user to the dictionary
         for query in user_search_details['APIs']:
             try:
@@ -168,31 +196,33 @@ def get_user_dictionary(user_name):
         except:
             print("[Error] Error occured when finding synonyms ...")
         
-        print("User details processed")
     except:
-        print("[ERROR] Error occured when reading from database ... !!!")
+        print("[ERROR] Error occured when processing search queries ... !!!")
 
     #add Application Details
     try:
 
         # Get application details from the WSO2AM_DB
-        application_details = pd.read_sql_table("AM_APPLICATION",AM_DB_engine)
-        user_applications = application_details[application_details['CREATED_BY']==user_name]
+        application_details = merged_table2[merged_table2['CREATED_BY'].str.contains(user_name)]
+    
+        # Adding the APIs that the user has already subscribed to the subscribed_APIs list
+        subscribed_APIs = list(application_details[application_details.API_NAME.notnull()]['API_NAME'])
+        
+        # Dropping the duplicate entries of same application
+        application_details.drop_duplicates(subset ="NAME", keep = "first", inplace = True) 
+        application_details = application_details[application_details.NAME != "DefaultApplication"]
 
-        for index,application in user_applications.iterrows():
+        for index,application in application_details.iterrows():
             current_application=[]
             application_name = application['NAME']
-            if application_name == 'DefaultApplication':
-                continue
-            else:
-                sub_names = application_name.split()
-                for sub_name in sub_names:
-                    sub_name = sub_name.lower()
-                    if sub_name in user_keyword_dictionary:
-                        user_keyword_dictionary[sub_name]+=4
-                    else:
-                        user_keyword_dictionary[sub_name]=4
-                    current_application.append(sub_name)
+            sub_names = application_name.split()
+            for sub_name in sub_names:
+                sub_name = sub_name.lower()
+                if sub_name in user_keyword_dictionary:
+                    user_keyword_dictionary[sub_name]+=4
+                else:
+                    user_keyword_dictionary[sub_name]=4
+                current_application.append(sub_name)
                     
             application_description = application["DESCRIPTION"]
 
@@ -209,26 +239,31 @@ def get_user_dictionary(user_name):
 
             user_keyword_dictionary = {key: user_keyword_dictionary.get(key, 0) + synonyms.get(key, 0)
                                   for key in set(user_keyword_dictionary) | set(synonyms)}
+            
+        # Getting the lemmas of the keywords    
         user_keyword_dictionary = get_lemma(user_keyword_dictionary)
-
+        
+        print("User details processed")
+        print(user_keyword_dictionary)
     except (ValueError):
         print("No Application")
 
     except:
-        print("[ERROR] Error occured when reading from database ... !!!")
+        print("[ERROR] Error occured when processing applications ... !!!")
 
-    return user_keyword_dictionary
+    return user_keyword_dictionary,subscribed_APIs
 
+
+# Creating a dictionary which contains the keyword dictionaries for each API
 def get_API_dictionaries():
 
     # Dictionary that contains keyword dictionaries from each API
     APIs_overall_dictionary = {}
 
     try:
-        #get details of APIs from db
-
+        # Get details of APIs from db
         for index, API in API_dataset.iterrows():
-
+            
             # The dictionary that contains keywords of the current API
             API_keyword_dictionary = {}
 
@@ -237,6 +272,7 @@ def get_API_dictionaries():
                 name_API = API['Name']
                 if str(name_API)=="":
                     continue
+                
                 API_keyword_dictionary[name_API.lower()] = 4
 
                 names = extract_keywords(name_API).keys()
@@ -300,7 +336,7 @@ def get_API_dictionaries():
             except:
                 resources = []
 
-            #add keywords from the API description
+            # Add keywords from the API description
             try:
                 API_description = API["Description"]
 
@@ -311,25 +347,34 @@ def get_API_dictionaries():
 
             except:
                 APIdescription = ""
-
+            
+            # Get lemmas of the keywords
             APIs_overall_dictionary[name_API]=get_lemma(API_keyword_dictionary)
             
         print("APIs processesd")
     except:
-        print("[ERROR] Error occured when reading from file ... !!!")
+        print("[ERROR] Error occured when processing APIs ... !!!")
 
     return APIs_overall_dictionary
 
+
+# Provide recommendations for a given user
 def get_recommendations(user_name,dictionary_APIs):
-    dictionary_user = get_user_dictionary(user_name)
+    dictionary_user,APIs_subscribed = get_user_dictionary(user_name)
+
+    # Adding the keywords from the user dictionary to the API-keyword matrix as a new row
     overall_matrix = dictionary_APIs
     overall_matrix['User'] = dictionary_user
+    
+    # Removing the subscribed APIs and creating the API-keywords 
+    overall_matrix = remove_APIs(overall_matrix,APIs_subscribed)
     API_matrix = create_matrix(overall_matrix)
+    
+    # Calculating the similarity between the row-User with other rows(APIs) sorting them 
+    # to get the list of APIs in the descending order of similarity to the given user.
     
     recommendations = get_pearson_correlation('User',API_matrix)
     recommended_APIs = list(recommendations.index[1:6])
     print(recommendations[1:10])
     return recommended_APIs
 
-api_dictionary = get_API_dictionaries()
-print(get_recommendations("Alice",api_dictionary))
