@@ -4,13 +4,14 @@
 cd /home/imalsha/Documents/APIM/apimcli
 ./apimcli
 ./apimcli list envs
-./apimcli add-env -n recommender_system --apim https://localhost:9443 --registration https://localhost:9443/client-registration/v0.15/register --admin https://localhost:9443/api/am/admin/v0.15 --api_list https://localhost:9443/api/am/publisher/v0.15/apis --app_list https://localhost:9443/api/am/admin/v0.15/applications --token https://localhost:9443/oauth2/token
-./apimcli export-apis -e recommender_system -t carbon.super -k
+
+#./apimcli add-env -n recommender_system --apim https://localhost:9443 --registration https://localhost:9443/client-registration/v0.15/register --admin https://localhost:9443/api/am/admin/v0.15 --api_list https://localhost:9443/api/am/publisher/v0.15/apis --app_list https://localhost:9443/api/am/admin/v0.15/applications --token https://localhost:9443/oauth2/token
+
+./apimcli export-apis -e recommender_system -t carbon.super -k	# Exporting all the APIs in the given tenant domain
 
 cd /home/imalsha/.wso2apimcli/exported/migration/recommender_system/carbon-dot-super/apis
 for file in *.zip
 do
-	#echo "$file"
 	unzip "$file" -d "/home/imalsha/Desktop/API_info/Migrated_APIs"
 done
 
@@ -24,7 +25,6 @@ do
 	swagger_file="$API"Meta-information/swagger.yaml
 	new=$(echo $API | cut -c 3-)
 	new=${new%-*}
-	#echo "$new"
 	api_copy=/home/imalsha/Desktop/API_info/Migrated_APIs/"${new%/}"_api
 	swagger_copy=/home/imalsha/Desktop/API_info/Migrated_APIs/"${new%/}"_swag
 	cp "$api_file" "$api_copy.yaml"
@@ -32,6 +32,7 @@ do
 	rm -rf "$API"
 	
 done
+echo "YAML files created"
 
 #cd /home/imalsha/Documents/Projects/Recommender_System/Server
 #python3 API_input.py
