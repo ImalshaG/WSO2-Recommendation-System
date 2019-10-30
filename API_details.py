@@ -1,3 +1,4 @@
+%%time
 import yaml
 import pandas as pd
 import os
@@ -30,7 +31,8 @@ for filename in os.listdir('/home/imalsha/Desktop/API_info/Migrated_APIs'):
                 except:
                     API_context = ""
 
-                API_details1 = API_details1.append({'Name' : API_name , 'Description' :API_description, 'Tags':API_tags,'Context':API_context} , ignore_index=True)
+                API_details1 = API_details1.append({'Name' : API_name , 'Description' :API_description, 
+                                                    'Tags':API_tags,'Context':API_context} , ignore_index=True)
             except yaml.YAMLError as exc:
                 print(exc)
     
@@ -54,7 +56,8 @@ for filename in os.listdir('/home/imalsha/Desktop/API_info/Migrated_APIs'):
                 except:
                     resource_set=[]
                 
-                API_details2 = API_details2.append({'Name' : API_title , 'Resources':resource_set} , ignore_index=True)
+                API_details2 = API_details2.append({'Name' : API_title , 'Resources':resource_set} , 
+                                                   ignore_index=True)
 
             except yaml.YAMLError as exc:
                 print(exc)
