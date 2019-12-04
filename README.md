@@ -17,17 +17,17 @@ WSO2 API Manager Store Portal is a marketplace for APIs. Developers can login to
 1. Install Java 7 or 8 (https://www.oracle.com/technetwork/java/javase/downloads/index.html).
 2. Download and install WSO2 API Manager version 3.0.0 (https://wso2.com/api-management/).
 3. Install Python 3.6 or higher.
-4. Install pip if not already installed.
+4. Install pip version 3 if not already installed.
 5. Install virtualenv and start a virtual environment using the following commands.
     ```
-    $ pip install virtualenv
+    $ pip3 install virtualenv
     $ cd <project-home-directory>
     $ virtualenv venv
     $ source venv/bin/activate
     ```
 6. Install the required python packages in the above created virtual environment, by running the following command in the project home directory.
     ```
-    $ pip install -r requirements.txt
+    $ pip3 install -r requirements.txt
     ```
 7. Create a mongodb instance at the ports: 27017-27019
 8. Add the following configurations to the `<API-M_HOME>/repository/conf.deployment.toml` file.
