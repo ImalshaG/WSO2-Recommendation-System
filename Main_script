@@ -1,0 +1,13 @@
+#!/bin/bash
+# main script for recommendation
+
+sudo docker start ProjectDB
+source venv/bin/activate
+cd components
+python3 server.py
+
+#deactivate
+
+
+
+
