@@ -11,7 +11,7 @@ HIGH_WEIGHT = 4
 NORMAL_WEIGHT = 3
 LOW_WEIGHT = 1
 
-WORD2VEC_MODEL = "utils/word2vec_model1.model"
+WORD2VEC_MODEL = "utils/word2vec_model.model"
 STOP_WORDS = "utils/stopList.txt"
 
 TIME_STAMP = 'time_stamp'
