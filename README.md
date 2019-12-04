@@ -4,13 +4,15 @@
 
 WSO2 API Manager is a full lifecycle API Management solution which has an API Gateway and a Microgateway. See more on https://wso2.com/api-management/
 
+
 ## What is API Recommendation System?
 
 WSO2 API Manager Store Portal is a marketplace for APIs. Developers can login to the portal to choose and subscribe which APIs to leverage in their applications. Currently, the developer has to pick the APIs of interest by browsing through the APIs or searching with a particular information associated with the API. API Recommendation System recommends APIs which can be beneficial for the developer using AI technologies. 
 
+
 # Quick Start Guide
 
-# Prerequisites
+## Prerequisites
 
 1. Install Java 7 or 8 (https://www.oracle.com/technetwork/java/javase/downloads/index.html).
 2. Download and install WSO2 API Manager version 3.0.0 (https://wso2.com/api-management/).
