@@ -1,0 +1,9 @@
+# Configurations for the recommendations sytem - python backend
+
+host: localhost
+port: 8082
+username: admin
+password: admin 
+recommendations_count: 5
+search_details_valid_months: 3
+minimum_search_queries: 20
