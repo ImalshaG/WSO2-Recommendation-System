@@ -14,27 +14,18 @@ WSO2 API Manager Store Portal is a marketplace for APIs. Developers can login to
 
 ## Prerequisites
 
-1. Install Java 7 or 8 (https://www.oracle.com/technetwork/java/javase/downloads/index.html).
-2. Download and install WSO2 API Manager version 3.0.0 (https://wso2.com/api-management/).
-3. Install Python 3.6 or higher.
-4. Install pip version 3 if not already installed.
-5. Install virtualenv and start a virtual environment using the following commands.
-    ```
-    $ pip3 install virtualenv
-    $ cd <project-home-directory>
-    $ virtualenv venv
-    $ source venv/bin/activate
-    ```
-6. Install the required python packages in the above created virtual environment, by running the following command in the project home directory.
+1. Install Python 3.6 or higher.
+2. Install pip version 3 if not already installed.
+3. Install the required python packages in the above created virtual environment, by running the following command in the project home directory.
     ```
     $ pip3 install -r requirements.txt
     ```
-7. Run the following command to download the spacy model.
+4. Run the following command to download the spacy model.
     ```
     $ python3 -m spacy download en_core_web_lg
     $ python3 -m spacy link en_core_web_lg en
     ```
-8. Create a mongodb instance with the port: 27017
+5. Create a mongodb instance with the port: 27017
 9. Add the following configurations to the `<API-M_HOME>/repository/conf.deployment.toml` file.
     ```
     [apim.devportal.recommendation]
