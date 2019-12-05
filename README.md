@@ -34,7 +34,7 @@ WSO2 API Manager Store Portal is a marketplace for APIs. Developers can login to
     $ python3 -m spacy download en_core_web_lg
     $ python3 -m spacy link en_core_web_lg en
     ```
-8. Create a mongodb instance at the ports: 27017-27019
+8. Create a mongodb instance with the port: 27017
 9. Add the following configurations to the `<API-M_HOME>/repository/conf.deployment.toml` file.
     ```
     [apim.devportal.recommendation]
