@@ -29,15 +29,20 @@ WSO2 API Manager Store Portal is a marketplace for APIs. Developers can login to
     ```
     $ pip3 install -r requirements.txt
     ```
-7. Create a mongodb instance at the ports: 27017-27019
-8. Add the following configurations to the `<API-M_HOME>/repository/conf.deployment.toml` file.
+7. Run the following command to download the spacy model.
+    ```
+    $ python3 -m spacy download en_core_web_lg
+    $ python3 -m spacy link en_core_web_lg en
+    ```
+8. Create a mongodb instance at the ports: 27017-27019
+9. Add the following configurations to the `<API-M_HOME>/repository/conf.deployment.toml` file.
     ```
     [apim.devportal.recommendation]
     url = "https://localhost:8082/"
     username = "admin"
     password = "admin"
     ```
-9. To start the recommendation server, run `<project-home-directory>/bin/recommendation-server.sh`
+10. To start the recommendation server, run `<project-home-directory>/bin/recommendation-server.sh`
     
 
    
