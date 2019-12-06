@@ -6,6 +6,7 @@ import datetime
 import pymongo
 import json
 import logging
+import yaml
 
 HIGH_WEIGHT = 4
 NORMAL_WEIGHT = 3
@@ -40,10 +41,16 @@ RESOURCES = 'resources'
 DESCRIPTION = 'description'
 SEARCH_QUERY = 'search_query'
 
+CONFIG_FILE = 'config/config.yaml'
+with open(CONFIG_FILE, 'r') as stream:
+    config_properties = yaml.safe_load(stream)
+
+MONGO_URL = "mongodb://" + config_properties['mongodb_url']
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+
 # Loading models
 nlp = spacy.load('en')
 word2vec_model = gensim.models.Word2Vec.load(WORD2VEC_MODEL)
-client = pymongo.MongoClient("mongodb://localhost:27017/")
 
 def extract_keywords(text):
     stop_words_file = open(STOP_WORDS, 'r')
@@ -173,9 +180,9 @@ def add_tags(tags, keyword_dictionary):
     for sub_tag in tags:
         sub_tag = sub_tag.strip().lower()
         if sub_tag in keyword_dictionary:
-            keyword_dictionary[sub_tag] += HIGH_WEIGHT
+            keyword_dictionary[sub_tag] += NORMAL_WEIGHT
         else:
-            keyword_dictionary[sub_tag] = NORMAL_WEIGHT
+            keyword_dictionary[sub_tag] = HIGH_WEIGHT
     return keyword_dictionary
 
 def add_context(context,keyword_dictionary):
@@ -188,9 +195,9 @@ def add_context(context,keyword_dictionary):
     for word in context_words:   
         word_keys=extract_keywords(word).keys()
         if word in keyword_dictionary:
-            keyword_dictionary[word]+=2
+            keyword_dictionary[word]+=LOW_WEIGHT
         else:
-            keyword_dictionary[word]=2
+            keyword_dictionary[word]=LOW_WEIGHT
         for word_key in word_keys:
             if word_key not in context_words:
                 if word_key in keyword_dictionary:
@@ -343,7 +350,7 @@ def add_app_name(app_name, app_words, keyword_dictionary):
     for sub_name in sub_names:
         sub_name = sub_name.lower()
         if sub_name in keyword_dictionary:
-            keyword_dictionary[sub_name]+=HIGH_WEIGHT
+            keyword_dictionary[sub_name]+=NORMAL_WEIGHT
         else:
             keyword_dictionary[sub_name]=HIGH_WEIGHT
         if sub_name not in app_words:
