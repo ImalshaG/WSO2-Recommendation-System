@@ -16,6 +16,9 @@ WSO2 API Manager Store Portal is a marketplace for APIs. Developers can login to
 
 1. Install Python 3.6 or higher.
 2. Install pip version 3 if not already installed.
+    ```
+    $ sudo apt install python3-pip
+    ```
 3. Install the required python packages in the above created virtual environment, by running the following command in the project home directory.
     ```
     $ pip3 install -r requirements.txt
