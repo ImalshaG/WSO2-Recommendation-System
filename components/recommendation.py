@@ -7,6 +7,9 @@ def create_matrix(tenant_dictionary):
     """
     Creates the API-keyword matrix where the rows represent APIs and columns represent all the keywords.
     The matrix contain the weights of each keyword in the APIs.
+
+    @type  tenant_dictionary: dictionary
+    @rtype:   pandas dataframe
     """
     API_ids = {}
     matrix = pd.DataFrame()
@@ -19,17 +22,27 @@ def create_matrix(tenant_dictionary):
     matrix = matrix.fillna(0)
     return matrix
 
-def get_pearson_correlation(API_name,matrix):
+def get_pearson_correlation(user,matrix):
     """
     Calculate the similarity between a given row with other rows using Pearson Correlation and sort them.
+
+    @type  user:    String
+    @type  matrix:  pandas dataframe
+    @rtype:   list of tuples in the form of [(x,y), (a,b)]
     """
     transposed_matrix = matrix.transpose()
-    API_data = transposed_matrix[API_name]
-    correlation = transposed_matrix.corrwith(API_data)
+    user_data = transposed_matrix[user]
+    correlation = transposed_matrix.corrwith(user_data)
     most_similar = correlation.sort_values(ascending=False)
     return most_similar
 
 def generate_recommendations(user, tenant, time_limit):
+    """
+    @type  user: String
+    @type   tenant: String
+    @type   time_limit: int
+    @rtype:   dictionary
+    """
     API_dictionary_collection = connect_db(API_DICTIONARIES)
     user_dictionary = {}
     tenant_entry = API_dictionary_collection.find({TENANT : tenant})
@@ -56,6 +69,11 @@ def generate_recommendations(user, tenant, time_limit):
 def get_recommendations_from_db(user, tenant):
     """
     Get pre-processed recommendations stored in the db, for the given user for the requested tenant domain
+
+    @type  user: String
+    @type   tenant: String
+    @rtype  older_recommendations:   dictionary
+    @rtype  time_limit:   int
     """
     table_recommendations = connect_db(USER_RECOMMENDATIONS)
     user_entry = table_recommendations.find({USER:user, TENANT: tenant})
@@ -76,6 +94,11 @@ def combine_recommendations(old_recommendations, new_recommendations):
     """
     Combine pre-processed recommendations and real-time processed recommendations and
     return them as a list of API names
+
+    @type  old_recommendations: dictionary
+    @type   new_recommendations: dictionary
+    @rtype  :   dictionary
+
     """
     try:
         combined_recommendations = {}
@@ -94,6 +117,11 @@ def combine_recommendations(old_recommendations, new_recommendations):
         return {}
 
 def generate_final_recommendation(user, tenant):
+    """
+    @type   user: String
+    @type   tenant: String
+    @rtype  list
+    """
     older_recommendations, time_limit = get_recommendations_from_db(user, tenant)
     new_recommendations = generate_recommendations(user, tenant, time_limit)
     if not older_recommendations:
