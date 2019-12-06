@@ -19,7 +19,7 @@ WSO2 API Manager Store Portal is a marketplace for APIs. Developers can login to
     ```
     $ sudo apt install python3-pip
     ```
-3. Install the required python packages in the above created virtual environment, by running the following command in the project home directory.
+3. Install the required python packages, by running the following command in the project home directory.
     ```
     $ pip3 install -r requirements.txt
     ```
